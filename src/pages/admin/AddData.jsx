@@ -16,8 +16,7 @@ const AddData = () => {
                     title="Ajouter une Info"
                     onSave={handleSave}
                     type="data"
-                    apiEndpoint="https://n8n.srv862127.hstgr.cloud/webhook/ajouter_infos"
-                    apiHeaders={{ "ajouter.info": "ajouter.info002" }}
+                    apiEndpoint="add_data"
                 />
             </div>
         </div>

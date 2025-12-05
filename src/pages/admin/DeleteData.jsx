@@ -17,8 +17,7 @@ const DeleteData = () => {
                     onSave={handleDelete}
                     type="data"
                     theme="red"
-                    apiEndpoint="https://n8n.srv862127.hstgr.cloud/webhook/supprimer_infos"
-                    apiHeaders={{ "supprime": "supprime.002" }}
+                    apiEndpoint="delete_data"
                 />
             </div>
         </div>

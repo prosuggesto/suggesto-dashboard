@@ -17,8 +17,7 @@ const EditData = () => {
                     onSave={handleSave}
                     type="data"
                     theme="purple"
-                    apiEndpoint="https://n8n.srv862127.hstgr.cloud/webhook/modifier_infos"
-                    apiHeaders={{ "modifier.info": "modifier.info002" }}
+                    apiEndpoint="edit_data"
                 />
             </div>
         </div>

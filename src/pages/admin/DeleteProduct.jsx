@@ -17,8 +17,7 @@ const DeleteProduct = () => {
                     onSave={handleDelete}
                     type="product"
                     theme="red"
-                    apiEndpoint="https://n8n.srv862127.hstgr.cloud/webhook/supprimer_produits"
-                    apiHeaders={{ "supprime": "supprime.01" }}
+                    apiEndpoint="delete_product"
                 />
             </div>
         </div>

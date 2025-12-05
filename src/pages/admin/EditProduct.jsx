@@ -17,8 +17,7 @@ const EditProduct = () => {
                     onSave={handleSave}
                     type="product"
                     theme="purple"
-                    apiEndpoint="https://n8n.srv862127.hstgr.cloud/webhook/modifier_produits"
-                    apiHeaders={{ "modifier": "modifier.001" }}
+                    apiEndpoint="edit_product"
                 />
             </div>
         </div>

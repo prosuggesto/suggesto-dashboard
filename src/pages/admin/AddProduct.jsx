@@ -16,8 +16,7 @@ const AddProduct = () => {
                     title="Ajouter un Produit"
                     onSave={handleSave}
                     type="product"
-                    apiEndpoint="https://n8n.srv862127.hstgr.cloud/webhook/ajouter_produits"
-                    apiHeaders={{ "ajouter.produit": "ajouter.produit001" }}
+                    apiEndpoint="add_product"
                 />
             </div>
         </div>

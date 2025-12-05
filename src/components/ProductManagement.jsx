@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Card from './Card';
+import { callN8N } from '../utils/api';
 
 // Custom Select Component
 const CustomSelect = ({ value, onChange, options, focusClass }) => {
@@ -103,23 +104,28 @@ const ProductManagement = () => {
         setError('');
 
         try {
-            const response = await fetch("https://n8n.srv862127.hstgr.cloud/webhook/mot_de_passe", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "valid": "correct.01"
-                },
-                body: JSON.stringify({ password })
-            });
+            // Using Vercel Proxy
+            const data = await callN8N('check_password', { password });
 
-            const data = await response.json();
+            // const response = await fetch("https://n8n.srv862127.hstgr.cloud/webhook/mot_de_passe", {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //         "valid": "correct.01"
+            //     },
+            //     body: JSON.stringify({ password })
+            // });
+
+            // const data = await response.json();
 
             // Handle n8n returning an array or object
             const responseData = Array.isArray(data) ? data[0] : data;
             const responseText = responseData?.text || responseData?.texte;
 
             // Check if response indicates invalid password
-            if (response.ok && responseText !== 'invalid') {
+            // Note: With proxy, we don't have direct access to 'response.ok' here easily unless we wrap it
+            // but callN8N throws if not ok.
+            if (responseText !== 'invalid') {
                 const route = `/admin/${action}-${type}`;
                 navigate(route);
             } else {

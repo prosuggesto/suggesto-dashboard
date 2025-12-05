@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import Background from '../components/Background';
+import { callN8N } from '../utils/api';
 
 const Login = () => {
     const [password, setPassword] = useState('');
@@ -15,16 +16,18 @@ const Login = () => {
         setError('');
 
         try {
-            const response = await fetch('https://n8n.srv862127.hstgr.cloud/webhook/reporting', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'reporting': 'reporting.01'
-                },
-                body: JSON.stringify({ password })
-            });
+            // const response = await fetch('https://n8n.srv862127.hstgr.cloud/webhook/reporting', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //         'reporting': 'reporting.01'
+            //     },
+            //     body: JSON.stringify({ password })
+            // });
+            // const responseData = await response.json();
 
-            const responseData = await response.json();
+            // Using Vercel Proxy
+            const responseData = await callN8N('reporting', { password });
 
             // Handle array response (as seen in user example) or single object
             const rawData = Array.isArray(responseData) ? responseData[0] : responseData;
