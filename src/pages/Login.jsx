@@ -151,7 +151,7 @@ const Login = () => {
                 <div className="flex flex-col items-center mb-10">
                     <img src={logo} alt="Suggesto Logo" className="h-12 mb-6" />
                     <h1 className="text-3xl font-bold text-white tracking-tight text-center">
-                        Bienvenue sur <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">Suggesto Stats</span>
+                        Bienvenue sur <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">Suggesto Dashboard</span>
                     </h1>
                     <p className="text-gray-400 mt-2 text-center text-sm">Connectez-vous pour accéder à vos données</p>
                 </div>
