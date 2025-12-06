@@ -68,7 +68,7 @@ const QuestionDetail = () => {
                     return (
                         <div
                             key={idx}
-                            className={`absolute transition-all duration-700 ease-in-out transform px-8 py-6 rounded-2xl border border-white/10 backdrop-blur-md flex flex-col items-center gap-4 text-center max-w-[80%]
+                            className={`absolute transition-all duration-700 ease-in-out transform px-4 py-4 md:px-8 md:py-6 rounded-2xl border border-white/10 backdrop-blur-md flex flex-col items-center gap-2 md:gap-4 text-center w-[90%] md:max-w-[80%]
                                ${isActive ? 'opacity-100 scale-100 translate-x-0 z-10 bg-violet-600/20 border-violet-500/50 shadow-xl' : 'opacity-0 scale-90 translate-x-full z-0'}
                            `}
                         >
@@ -143,8 +143,8 @@ const QuestionDetail = () => {
             return (
                 <div className="flex flex-col gap-8">
                     {/* Row 1: Traitées */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[400px]">
-                        <Card className="flex flex-col relative overflow-hidden !bg-[#0a0e27]/80 !backdrop-blur-md !border-green-500/20">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:h-[400px]">
+                        <Card className="flex flex-col relative overflow-hidden !bg-[#0a0e27]/80 !backdrop-blur-md !border-green-500/20 h-80 lg:h-auto">
                             <h3 className="text-lg font-semibold text-green-400 mb-4 flex items-center gap-2">
                                 ✅ Support Traité
                             </h3>
@@ -172,8 +172,8 @@ const QuestionDetail = () => {
                     </div>
 
                     {/* Row 2: Non Traitées */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-[400px]">
-                        <Card className="flex flex-col relative overflow-hidden !bg-[#0a0e27]/80 !backdrop-blur-md !border-red-500/20">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:h-[400px]">
+                        <Card className="flex flex-col relative overflow-hidden !bg-[#0a0e27]/80 !backdrop-blur-md !border-red-500/20 h-80 lg:h-auto">
                             <h3 className="text-lg font-semibold text-red-400 mb-4 flex items-center gap-2">
                                 ⏳ Support Non Traité
                             </h3>
@@ -205,9 +205,9 @@ const QuestionDetail = () => {
             // Produits or Commandes
             const questions = type === 'produits' ? data.QuestionsPosees : data.QuestionsCommandeSupport;
             return (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 h-[500px]">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:h-[500px]">
                     {/* Left: Carousel */}
-                    <Card className="flex flex-col justify-center relative overflow-hidden !bg-[#0a0e27]/80 !backdrop-blur-md !border-cyan-500/20">
+                    <Card className="flex flex-col justify-center relative overflow-hidden !bg-[#0a0e27]/80 !backdrop-blur-md !border-cyan-500/20 h-80 lg:h-auto">
                         <div className="absolute inset-0 bg-gradient-to-br from-cyan-600/10 to-transparent pointer-events-none" />
                         <h3 className="text-xl font-bold text-white mb-6 z-10 text-center">À la une</h3>
                         <div className="flex-1 relative w-full min-h-0">
@@ -216,7 +216,7 @@ const QuestionDetail = () => {
                     </Card>
 
                     {/* Right: List */}
-                    <Card className="flex flex-col !bg-[#0a0e27]/80 !backdrop-blur-md overflow-hidden">
+                    <Card className="flex flex-col !bg-[#0a0e27]/80 !backdrop-blur-md overflow-hidden h-96 lg:h-auto">
                         <div className="flex items-center justify-between mb-6">
                             <h3 className="text-xl font-bold text-white flex items-center gap-2">
                                 <span className="p-2 bg-white/10 rounded-lg">📋</span> Liste Complète

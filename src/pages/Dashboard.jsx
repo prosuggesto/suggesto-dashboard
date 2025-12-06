@@ -71,7 +71,7 @@ const Dashboard = () => {
             <header className="fixed top-0 left-0 right-0 z-50 bg-[#050816]/70 backdrop-blur-xl border-b border-white/5 px-6 py-4 flex justify-between items-center">
                 <div className="flex items-center gap-3">
                     <img src={logo} alt="Suggesto Logo" className="h-8" />
-                    <span className="text-lg font-bold tracking-wide text-white">SUGGESTO <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">STATS</span></span>
+                    <span className="text-lg font-bold tracking-wide text-white">SUGGESTO <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">DASHBOARD</span></span>
                 </div>
 
                 <div className="flex items-center gap-4 relative">
