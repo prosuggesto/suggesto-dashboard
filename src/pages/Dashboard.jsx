@@ -129,12 +129,12 @@ const Dashboard = () => {
                 {/* Section 2: Trends & Questions Grid */}
                 <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Left Block: Trends */}
-                    <div className="animate-fade-in h-[500px]" style={{ animationDelay: '0.2s' }}>
+                    <div className="animate-fade-in lg:h-[500px]" style={{ animationDelay: '0.2s' }}>
                         <TrendSection data={dashboardData} />
                     </div>
 
                     {/* Right Block: Questions */}
-                    <div className="animate-fade-in h-[500px]" style={{ animationDelay: '0.3s' }}>
+                    <div className="animate-fade-in lg:h-[500px]" style={{ animationDelay: '0.3s' }}>
                         <QuestionBlock data={dashboardData} />
                     </div>
                 </section>

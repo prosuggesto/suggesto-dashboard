@@ -52,13 +52,13 @@ const QuestionBlock = ({ data }) => {
                                 ${isActive ? 'opacity-100 scale-100 translate-x-0 z-10 bg-violet-600/20 border-violet-500/50' : 'opacity-0 scale-90 translate-x-full z-0'}
                             `}
                                 >
-                                    <span className="text-2xl">🤔</span>
-                                    <div className="flex flex-col text-left min-w-0">
-                                        <span className="text-base font-medium text-white truncate">
+                                    <span className="text-xl md:text-2xl shrink-0">🤔</span>
+                                    <div className="flex flex-col text-left min-w-0 flex-1">
+                                        <span className="text-sm md:text-base font-medium text-white truncate w-full">
                                             {q.text || q}
                                         </span>
                                         {q.reponse && (
-                                            <span className="text-xs text-gray-400 truncate max-w-[200px] italic">
+                                            <span className="text-[10px] md:text-xs text-gray-400 truncate max-w-[150px] md:max-w-[200px] italic">
                                                 "{q.reponse}"
                                             </span>
                                         )}

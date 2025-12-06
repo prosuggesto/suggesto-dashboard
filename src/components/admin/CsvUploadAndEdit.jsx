@@ -10,6 +10,9 @@ const CsvUploadAndEdit = ({ title, onSave, type, theme = 'cyan', apiEndpoint, ap
     const [fileName, setFileName] = useState('');
     const fileInputRef = useRef(null);
 
+    // Selection State
+    const [selectedRows, setSelectedRows] = useState(new Set());
+
     // Modal State
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingCell, setEditingCell] = useState({ rowIndex: null, column: null, value: '' });
@@ -28,6 +31,7 @@ const CsvUploadAndEdit = ({ title, onSave, type, theme = 'cyan', apiEndpoint, ap
                 setColumns(results.meta.fields || []);
                 setData(results.data);
                 setIsLoading(false);
+                setSelectedRows(new Set());
             },
             error: (error) => {
                 console.error('Error parsing CSV:', error);
@@ -54,6 +58,36 @@ const CsvUploadAndEdit = ({ title, onSave, type, theme = 'cyan', apiEndpoint, ap
         }
     };
 
+    // Row Selection Handlers
+    const toggleRowSelection = (index) => {
+        const newSelected = new Set(selectedRows);
+        if (newSelected.has(index)) {
+            newSelected.delete(index);
+        } else {
+            newSelected.add(index);
+        }
+        setSelectedRows(newSelected);
+    };
+
+    const toggleAllSelection = () => {
+        if (selectedRows.size === data.length) {
+            setSelectedRows(new Set());
+        } else {
+            const allIndices = new Set(data.map((_, idx) => idx));
+            setSelectedRows(allIndices);
+        }
+    };
+
+    const handleDeleteSelected = () => {
+        if (selectedRows.size === 0) return;
+
+        if (window.confirm(`Êtes-vous sûr de vouloir supprimer ${selectedRows.size} ligne(s) ?`)) {
+            const newData = data.filter((_, idx) => !selectedRows.has(idx));
+            setData(newData);
+            setSelectedRows(new Set());
+        }
+    };
+
     const openEditModal = (rowIndex, column, value) => {
         setEditingCell({ rowIndex, column, value });
         setIsModalOpen(true);
@@ -67,10 +101,15 @@ const CsvUploadAndEdit = ({ title, onSave, type, theme = 'cyan', apiEndpoint, ap
         setEditingCell({ rowIndex: null, column: null, value: '' });
     };
 
+    const clearCellContent = () => {
+        setEditingCell({ ...editingCell, value: '' });
+    };
+
     const handleReset = () => {
         setData([]);
         setColumns([]);
         setFileName('');
+        setSelectedRows(new Set());
         if (fileInputRef.current) {
             fileInputRef.current.value = '';
         }
@@ -119,7 +158,8 @@ const CsvUploadAndEdit = ({ title, onSave, type, theme = 'cyan', apiEndpoint, ap
             backButtonBorder: "group-hover:border-cyan-500/20",
             modalText: "text-cyan-400",
             modalBorder: "focus:border-cyan-500/50",
-            modalButton: "bg-cyan-600 hover:bg-cyan-500 shadow-cyan-500/20"
+            modalButton: "bg-cyan-600 hover:bg-cyan-500 shadow-cyan-500/20",
+            checkbox: "text-cyan-500 focus:ring-cyan-500"
         },
         red: {
             gradient: "from-red-400 to-orange-500",
@@ -131,7 +171,8 @@ const CsvUploadAndEdit = ({ title, onSave, type, theme = 'cyan', apiEndpoint, ap
             backButtonBorder: "group-hover:border-red-500/20",
             modalText: "text-red-400",
             modalBorder: "focus:border-red-500/50",
-            modalButton: "bg-red-600 hover:bg-red-500 shadow-red-500/20"
+            modalButton: "bg-red-600 hover:bg-red-500 shadow-red-500/20",
+            checkbox: "text-red-500 focus:ring-red-500"
         },
         purple: {
             gradient: "from-purple-400 to-pink-500",
@@ -143,7 +184,8 @@ const CsvUploadAndEdit = ({ title, onSave, type, theme = 'cyan', apiEndpoint, ap
             backButtonBorder: "group-hover:border-purple-500/20",
             modalText: "text-purple-400",
             modalBorder: "focus:border-purple-500/50",
-            modalButton: "bg-purple-600 hover:bg-purple-500 shadow-purple-500/20"
+            modalButton: "bg-purple-600 hover:bg-purple-500 shadow-purple-500/20",
+            checkbox: "text-purple-500 focus:ring-purple-500"
         }
     };
 
@@ -164,9 +206,25 @@ const CsvUploadAndEdit = ({ title, onSave, type, theme = 'cyan', apiEndpoint, ap
             </button>
 
             <Card className="!bg-transparent !backdrop-blur-none border border-white/10 p-6 rounded-2xl flex flex-col h-[80vh] shadow-2xl">
-                <h2 className={`text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${currentTheme.gradient} mb-6 flex-shrink-0`}>
-                    {title}
-                </h2>
+                <div className="flex justify-between items-center mb-6 flex-shrink-0">
+                    <h2 className={`text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${currentTheme.gradient}`}>
+                        {title}
+                    </h2>
+
+                    {/* Delete Selected Button */}
+                    {selectedRows.size > 0 && (
+                        <button
+                            onClick={handleDeleteSelected}
+                            className="flex items-center gap-2 px-4 py-2 bg-red-500/10 border border-red-500/20 text-red-400 rounded-lg hover:bg-red-500/20 transition-all animate-fade-in"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <polyline points="3 6 5 6 21 6"></polyline>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                            </svg>
+                            Supprimer la sélection ({selectedRows.size})
+                        </button>
+                    )}
+                </div>
 
                 {/* File Upload Section */}
                 <div className="mb-6 flex-shrink-0">
@@ -193,6 +251,15 @@ const CsvUploadAndEdit = ({ title, onSave, type, theme = 'cyan', apiEndpoint, ap
                         <table className="w-full text-xs text-left text-gray-300">
                             <thead className="text-xs text-gray-400 uppercase bg-[#0a0e27] sticky top-0 z-20 shadow-md">
                                 <tr>
+                                    {/* Selection Checkbox Header */}
+                                    <th className="px-4 py-3 border-b border-white/10 bg-[#0a0e27] w-10">
+                                        <input
+                                            type="checkbox"
+                                            checked={data.length > 0 && selectedRows.size === data.length}
+                                            onChange={toggleAllSelection}
+                                            className={`rounded bg-white/10 border-white/20 ${currentTheme.checkbox}`}
+                                        />
+                                    </th>
                                     {columns.map((col) => (
                                         <th key={col} className="px-4 py-3 font-medium tracking-wider min-w-[120px] border-b border-white/10 bg-[#0a0e27] group">
                                             <div className="flex items-center justify-between gap-2">
@@ -214,7 +281,16 @@ const CsvUploadAndEdit = ({ title, onSave, type, theme = 'cyan', apiEndpoint, ap
                             </thead>
                             <tbody>
                                 {data.map((row, rowIndex) => (
-                                    <tr key={rowIndex} className="bg-transparent border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                                    <tr key={rowIndex} className={`border-b border-white/5 transition-colors ${selectedRows.has(rowIndex) ? 'bg-white/10' : 'bg-transparent hover:bg-white/[0.02]'}`}>
+                                        {/* Selection Checkbox Row */}
+                                        <td className="px-4 py-2 border-r border-white/5">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedRows.has(rowIndex)}
+                                                onChange={() => toggleRowSelection(rowIndex)}
+                                                className={`rounded bg-white/10 border-white/20 ${currentTheme.checkbox}`}
+                                            />
+                                        </td>
                                         {columns.map((col) => (
                                             <td key={`${rowIndex}-${col}`} className="px-4 py-2 relative group border-r border-white/5 last:border-r-0">
                                                 <div className="flex items-center justify-between">
@@ -263,9 +339,18 @@ const CsvUploadAndEdit = ({ title, onSave, type, theme = 'cyan', apiEndpoint, ap
             {isModalOpen && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
                     <div className="bg-[#0a0e27] border border-white/10 rounded-2xl w-full max-w-2xl shadow-2xl p-6 relative">
-                        <h3 className="text-xl font-bold text-white mb-4">
-                            Éditer la cellule <span className={currentTheme.modalText}>({editingCell.column})</span>
-                        </h3>
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-xl font-bold text-white">
+                                Éditer la cellule <span className={currentTheme.modalText}>({editingCell.column})</span>
+                            </h3>
+                            <button
+                                onClick={clearCellContent}
+                                className="text-xs text-red-300 hover:text-red-400 flex items-center gap-1 border border-red-500/30 px-2 py-1 rounded hover:bg-red-500/10 transition-colors"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                Vider
+                            </button>
+                        </div>
 
                         <textarea
                             value={editingCell.value}
