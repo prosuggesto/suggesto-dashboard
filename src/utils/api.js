@@ -30,6 +30,11 @@ export const callN8N = async (endpoint, body) => {
     if (endpoint === 'reporting') headers['reporting'] = 'reporting.01';
     if (endpoint === 'check_password') headers['valid'] = 'correct.01';
     if (endpoint === 'add_product') headers['ajouter.produit'] = 'ajouter.produit.01';
+    if (endpoint === 'edit_product') headers['modifier'] = 'modifier.produit.01';
+    if (endpoint === 'edit_data') headers['modifier.info'] = 'modifier.info.01';
+    if (endpoint === 'delete_product') headers['supprime'] = 'supprime.produit.01';
+    if (endpoint === 'delete_data') headers['supprime'] = 'supprime.info.01';
+    if (endpoint === 'add_data') headers['ajouter.info'] = 'ajouter.info.01';
 
     try {
         const response = await fetch(url, {
