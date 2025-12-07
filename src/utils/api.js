@@ -23,24 +23,25 @@ export const callN8N = async (endpoint, body) => {
 
         if (!response.ok) {
             let errorMessage = `Erreur HTTP: ${response.status} ${response.statusText}`;
+            const errorText = await response.text();
+
             try {
-                const errorData = await response.json();
+                const errorData = JSON.parse(errorText);
                 if (errorData.error) {
                     errorMessage = `${errorData.error} (${errorData.details || ''})`;
                 }
             } catch (e) {
-                // If it's not JSON, it might be an HTML error page (e.g. 504 Gateway Timeout)
-                try {
-                    const errorText = await response.text();
-                    errorMessage += ` - Détail: ${errorText}`;
-                } catch (textError) {
-                    // Ignore text reading error
+                // Parsing failed, use the raw text if available
+                if (errorText) {
+                    // Limit length to avoid alerting massive HTML
+                    errorMessage += ` - Détail: ${errorText.substring(0, 500)}`;
                 }
             }
             throw new Error(errorMessage);
         }
 
-        return await response.json();
+        const successText = await response.text();
+        return JSON.parse(successText);
     } catch (error) {
         console.error("API Call Error:", error);
         throw error;
