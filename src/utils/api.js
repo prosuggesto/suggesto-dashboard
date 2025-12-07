@@ -29,6 +29,7 @@ export const callN8N = async (endpoint, body) => {
     // Specific headers required by n8n workflows
     if (endpoint === 'reporting') headers['reporting'] = 'reporting.01';
     if (endpoint === 'check_password') headers['valid'] = 'correct.01';
+    if (endpoint === 'add_product') headers['ajouter.produit'] = 'ajouter.produit.01';
 
     try {
         const response = await fetch(url, {
