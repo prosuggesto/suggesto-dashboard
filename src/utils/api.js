@@ -22,8 +22,16 @@ export const callN8N = async (endpoint, body) => {
         });
 
         if (!response.ok) {
-            // Throw a detailed error with the status code
-            throw new Error(`Erreur HTTP: ${response.status} ${response.statusText}`);
+            let errorMessage = `Erreur HTTP: ${response.status} ${response.statusText}`;
+            try {
+                const errorData = await response.json();
+                if (errorData.error) {
+                    errorMessage = `${errorData.error} (${errorData.details || ''})`;
+                }
+            } catch (e) {
+                // Determine if parsing JSON failed, keep default message
+            }
+            throw new Error(errorMessage);
         }
 
         return await response.json();
