@@ -48,7 +48,15 @@ export default async function handler(req, res) {
             body: JSON.stringify(req.body)
         });
 
-        const data = await response.json();
+        const textData = await response.text();
+        let data;
+        try {
+            data = JSON.parse(textData);
+        } catch (e) {
+            // Not JSON (could be HTML error page from Hostinger/n8n)
+            console.error('Non-JSON response from n8n:', textData);
+            throw new Error(`Réponse invalide du serveur distant: ${textData.substring(0, 200)}...`);
+        }
         res.status(response.status).json(data);
     } catch (error) {
         console.error('Proxy Error:', error);

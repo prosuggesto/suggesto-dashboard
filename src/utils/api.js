@@ -29,7 +29,13 @@ export const callN8N = async (endpoint, body) => {
                     errorMessage = `${errorData.error} (${errorData.details || ''})`;
                 }
             } catch (e) {
-                // Determine if parsing JSON failed, keep default message
+                // If it's not JSON, it might be an HTML error page (e.g. 504 Gateway Timeout)
+                try {
+                    const errorText = await response.text();
+                    errorMessage += ` - Détail: ${errorText}`;
+                } catch (textError) {
+                    // Ignore text reading error
+                }
             }
             throw new Error(errorMessage);
         }
