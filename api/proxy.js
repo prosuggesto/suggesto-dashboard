@@ -52,6 +52,9 @@ export default async function handler(req, res) {
         res.status(response.status).json(data);
     } catch (error) {
         console.error('Proxy Error:', error);
-        res.status(500).json({ error: 'Erreur serveur interne' });
+        res.status(500).json({
+            error: error.message || 'Erreur serveur interne',
+            details: error.toString()
+        });
     }
 }
