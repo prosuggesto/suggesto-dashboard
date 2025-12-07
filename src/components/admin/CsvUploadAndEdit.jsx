@@ -208,7 +208,7 @@ const CsvUploadAndEdit = ({ title, onSave, type, theme = 'cyan', apiEndpoint, ap
             <Card className="!bg-transparent !backdrop-blur-none border border-white/10 p-6 rounded-2xl flex flex-col h-[80vh] shadow-2xl">
                 <div className="flex justify-between items-center mb-6 flex-shrink-0">
                     <h2 className={`text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r ${currentTheme.gradient}`}>
-                        {title}
+                        {title} <span className="text-sm font-normal text-gray-500 ml-2">(v3 Direct)</span>
                     </h2>
 
                     {/* Delete Selected Button */}
