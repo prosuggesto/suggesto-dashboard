@@ -1,23 +1,39 @@
 /**
- * Centralized API helper to call the Vercel proxy.
- * Switch between direct n8n calls (local) and proxy calls (production) if needed,
- * or always use proxy if running 'vercel dev'.
- * 
- * For this implementation, we default to the relative /api/proxy path 
- * which works on Vercel deployment.
+ * Centralized API helper to call n8n webhooks directly.
+ * Bypasses Vercel proxy to avoid 500 errors and serverless limitations.
  */
 
+const ENDPOINTS = {
+    'reporting': 'https://n8n.srv862127.hstgr.cloud/webhook/reporting',
+    'check_password': 'https://n8n.srv862127.hstgr.cloud/webhook/mot_de_passe',
+    'add_product': 'https://n8n.srv862127.hstgr.cloud/webhook/ajouter_produits',
+    'edit_product': 'https://n8n.srv862127.hstgr.cloud/webhook/modifier_produits',
+    'delete_product': 'https://n8n.srv862127.hstgr.cloud/webhook/supprimer_produits',
+    'add_data': 'https://n8n.srv862127.hstgr.cloud/webhook/ajouter_infos',
+    'edit_data': 'https://n8n.srv862127.hstgr.cloud/webhook/modifier_infos',
+    'delete_data': 'https://n8n.srv862127.hstgr.cloud/webhook/supprimer_infos'
+};
+
 export const callN8N = async (endpoint, body) => {
-    // Always use the Vercel proxy, even locally.
-    // This allows testing the proxy mechanism itself.
-    // Note: Local Vite dev server needs a proxy config or 'vercel dev' to handle /api/proxy.
+    console.log("API Utils Version: v3 (Direct n8n Calls)"); // Version marker
+
+    if (!ENDPOINTS[endpoint]) {
+        throw new Error(`Endpoint '${endpoint}' non configuré.`);
+    }
+
+    const url = ENDPOINTS[endpoint];
+    const headers = {
+        'Content-Type': 'application/json'
+    };
+
+    // Specific headers required by n8n workflows
+    if (endpoint === 'reporting') headers['reporting'] = 'reporting.01';
+    if (endpoint === 'check_password') headers['valid'] = 'correct.01';
 
     try {
-        const response = await fetch(`/api/proxy?endpoint=${endpoint}`, {
+        const response = await fetch(url, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: headers,
             body: JSON.stringify(body)
         });
 
