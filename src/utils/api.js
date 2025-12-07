@@ -8,12 +8,9 @@
  */
 
 export const callN8N = async (endpoint, body) => {
-    // In local development (Vite), /api won't exist unless using 'vercel dev'.
-    // If you want to test locally, you might need to hardcode the full Vercel URL after first deploy
-    // or keep using direct URLs for localhost.
-
-    // Check if we are checking password or reporting to handle specific return types if needed
-    // But mostly we just pass JSON back and forth.
+    // Always use the Vercel proxy, even locally.
+    // This allows testing the proxy mechanism itself.
+    // Note: Local Vite dev server needs a proxy config or 'vercel dev' to handle /api/proxy.
 
     try {
         const response = await fetch(`/api/proxy?endpoint=${endpoint}`, {
@@ -25,7 +22,8 @@ export const callN8N = async (endpoint, body) => {
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            // Throw a detailed error with the status code
+            throw new Error(`Erreur HTTP: ${response.status} ${response.statusText}`);
         }
 
         return await response.json();

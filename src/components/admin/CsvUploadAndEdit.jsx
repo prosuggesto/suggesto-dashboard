@@ -140,7 +140,7 @@ const CsvUploadAndEdit = ({ title, onSave, type, theme = 'cyan', apiEndpoint, ap
 
         } catch (error) {
             console.error("Network Error:", error);
-            alert("Erreur lors de l'envoi des données.");
+            alert(`Erreur lors de l'envoi des données: ${error.message}`);
         } finally {
             setIsLoading(false);
         }
