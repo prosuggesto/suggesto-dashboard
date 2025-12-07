@@ -1,45 +1,17 @@
 /**
- * Centralized API helper to call n8n webhooks directly.
- * Bypasses Vercel proxy to avoid 500 errors and serverless limitations.
+ * Centralized API helper to call the Vercel proxy.
+ * Secures n8n webhook URLs and headers by keeping them on the server side.
  */
 
-const ENDPOINTS = {
-    'reporting': 'https://n8n.srv862127.hstgr.cloud/webhook/reporting',
-    'check_password': 'https://n8n.srv862127.hstgr.cloud/webhook/mot_de_passe',
-    'add_product': 'https://n8n.srv862127.hstgr.cloud/webhook/ajouter_produits',
-    'edit_product': 'https://n8n.srv862127.hstgr.cloud/webhook/modifier_produits',
-    'delete_product': 'https://n8n.srv862127.hstgr.cloud/webhook/supprimer_produits',
-    'add_data': 'https://n8n.srv862127.hstgr.cloud/webhook/ajouter_infos',
-    'edit_data': 'https://n8n.srv862127.hstgr.cloud/webhook/modifier_infos',
-    'delete_data': 'https://n8n.srv862127.hstgr.cloud/webhook/supprimer_infos'
-};
-
 export const callN8N = async (endpoint, body) => {
-    console.log("API Utils Version: v3 (Direct n8n Calls)"); // Version marker
-
-    if (!ENDPOINTS[endpoint]) {
-        throw new Error(`Endpoint '${endpoint}' non configuré.`);
-    }
-
-    const url = ENDPOINTS[endpoint];
-    const headers = {
-        'Content-Type': 'application/json'
-    };
-
-    // Specific headers required by n8n workflows
-    if (endpoint === 'reporting') headers['reporting'] = 'reporting.01';
-    if (endpoint === 'check_password') headers['valid'] = 'correct.01';
-    if (endpoint === 'add_product') headers['ajouter.produit'] = 'ajouter.produit.01';
-    if (endpoint === 'edit_product') headers['modifier'] = 'modifier.produit.01';
-    if (endpoint === 'edit_data') headers['modifier.info'] = 'modifier.info.01';
-    if (endpoint === 'delete_product') headers['supprime'] = 'supprime.produit.01';
-    if (endpoint === 'delete_data') headers['supprime'] = 'supprime.info.01';
-    if (endpoint === 'add_data') headers['ajouter.info'] = 'ajouter.info.01';
+    console.log("API Utils Version: v4 (Proxy Secured)"); // Version marker
 
     try {
-        const response = await fetch(url, {
+        const response = await fetch(`/api/proxy?endpoint=${endpoint}`, {
             method: 'POST',
-            headers: headers,
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify(body)
         });
 

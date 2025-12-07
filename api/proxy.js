@@ -45,6 +45,12 @@ export default async function handler(req, res) {
 
     if (endpoint === 'reporting') customHeaders['reporting'] = 'reporting.01';
     if (endpoint === 'check_password') customHeaders['valid'] = 'correct.01';
+    if (endpoint === 'add_product') customHeaders['ajouter.produit'] = 'ajouter.produit.01';
+    if (endpoint === 'edit_product') customHeaders['modifier'] = 'modifier.produit.01';
+    if (endpoint === 'edit_data') customHeaders['modifier.info'] = 'modifier.info.01';
+    if (endpoint === 'delete_product') customHeaders['supprime'] = 'supprime.produit.01';
+    if (endpoint === 'delete_data') customHeaders['supprime'] = 'supprime.info.01';
+    if (endpoint === 'add_data') customHeaders['ajouter.info'] = 'ajouter.info.01';
 
     const requestOptions = {
         hostname: targetUrl.hostname,
