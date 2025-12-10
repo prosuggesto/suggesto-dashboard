@@ -73,7 +73,7 @@ const QuestionDetail = () => {
                            `}
                         >
                             <span className="text-4xl">🤔</span>
-                            <span className="text-lg font-medium text-white">
+                            <span className="text-lg font-medium text-white line-clamp-4 overflow-hidden text-ellipsis">
                                 {q.text || q}
                             </span>
                             {/* Answer hidden in carousel as per user request */}

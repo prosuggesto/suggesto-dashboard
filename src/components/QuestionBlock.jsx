@@ -48,7 +48,7 @@ const QuestionBlock = ({ data }) => {
                             return (
                                 <div
                                     key={idx}
-                                    className={`absolute transition-all duration-700 ease-in-out transform px-6 py-3 rounded-full border border-white/10 backdrop-blur-sm flex items-center gap-3
+                                    className={`absolute transition-all duration-700 ease-in-out transform px-6 py-3 rounded-full border border-white/10 backdrop-blur-sm flex items-center gap-3 max-w-[90%]
                                 ${isActive ? 'opacity-100 scale-100 translate-x-0 z-10 bg-violet-600/20 border-violet-500/50' : 'opacity-0 scale-90 translate-x-full z-0'}
                             `}
                                 >
